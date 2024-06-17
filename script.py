@@ -1,9 +1,7 @@
-from binance.client import Client
 import time
-
-variacion = 5  # Variacion en los ultimos 30 minutos en porcentaje
-variacion_100 = 7  # Variacion en los ultimos 30 minutos en porcentaje si tiene menos de 100k de volumen
-variacionfast = 2  # Variacion en los ultimos 2 minutos en porcentaje
+from binance.client import Client
+from config import *
+from message import enviar_mensaje_html
 
 client = Client('','', tld='com')
 
@@ -52,7 +50,10 @@ def porcentaje_klines(tick, klines, knumber):
                 print('Volumen: ' + human_format(volumen))
                 print('Precio max: ' + info['highPrice'])
                 print('Precio min: ' + info['lowPrice'])
-                print('')
+                print('Enviando mensaje a Telegram...')
+                enviar_mensaje_html(bot_token, chat_id, 'LONG: '+tick)
+                
+
 
     # SHORT
     if final > inicial:
@@ -67,6 +68,8 @@ def porcentaje_klines(tick, klines, knumber):
                 print('Precio max: ' + info['highPrice'])
                 print('Precio min: ' + info['lowPrice'])
                 print('')
+                print('Enviando mensaje a Telegram...')
+                enviar_mensaje_html(bot_token, chat_id, 'SHORT: ' + tick)
 
     # FAST
     if knumber >= 3:
@@ -83,6 +86,8 @@ def porcentaje_klines(tick, klines, knumber):
                 print('Precio max: ' + info['highPrice'])
                 print('Precio min: ' + info['lowPrice'])
                 print('')
+                print('Enviando mensaje a Telegram...')
+                enviar_mensaje_html(bot_token, chat_id, 'FAST SHORT!: ' + tick)
 
 
 
